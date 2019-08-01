@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OHW</string>
+    <string name="app_name">ShopWise</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -13,4 +13,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="categories">Categories</string>
+    <string name="Account">Account</string>
+    <string name="support">Support</string>
 </resources>

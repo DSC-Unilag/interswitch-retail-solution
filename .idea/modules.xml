@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OHW.iml" filepath="$PROJECT_DIR$/OHW.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/interswitch-retail-solution.iml" filepath="$PROJECT_DIR$/interswitch-retail-solution.iml" />
     </modules>
   </component>
 </project>
