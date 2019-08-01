@@ -84,13 +84,16 @@ def create_user():
 @app.route('/create_producer',methods=['GET','POST'])
 def create_producer():
 	if request.method == "POST":
-		name = request.form['companyname']
+		companyname = request.form['companyname']
 		email = request.form['email']
 		phone = request.form['phone']
 		address = request.form['address']
 		category = request.form['category']
 
-		newproducer = Producer(name=name, email=email, phone=phone, category=category)
+		producer_class = Category.query.filter_by(categoryname=category).first()
+		#app.logger.info(producer_class.categoryname)
+
+		newproducer = Producer(companyname=companyname, email=email, phone=phone, address=address, produce_class=producer_class)
 		db.session.add(newproducer)
 		db.session.commit()
 
