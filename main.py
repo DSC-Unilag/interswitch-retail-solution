@@ -2,7 +2,7 @@
 import os
 
 #External Libraries
-from flask import Flask,request,url_for,render_template,session,logging,flash
+from flask import Flask,request,url_for,render_template,session,logging,flash,redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_script import Manager
@@ -57,54 +57,51 @@ class Producer(db.Model):
 	companyname = db.Column(db.String(200),unique=True)
 	email = db.Column(db.String(100))
 	phone = db.Column(db.String(100))
-	#address = db.Column(db.Text,unique=True)
+	address = db.Column(db.String(225),unique=True)
 	item = db.relationship('Product',backref='manufacturer')
 	category_id = db.Column(db.Integer,db.ForeignKey('category.id'))
 
 ## Endpoints #
-
 @app.route('/create_user',methods=['GET','POST'])
 def create_user():
 	if request.method == 'POST':
 		name = request.form['name']
 		email = request.form['email']
-		#cartItems = request.form['cartItems']
 		password = sha256_crypt.hash(str(request.form['password']))
 
 		newuser = User(name=name,email=email,password=password)
 		db.session.add(newuser)
 		db.session.commit()
-		app.logger.info('SUCCESSFUL')
+		flash('Welcome new user','success')
+		return redirect(url_for('user_profile'))
 	else:
 		app.logger.info('PLs sign up')
-	return render_template('index.html')
 
-	name = request.json['name']
-	email = request.json['email']
-	cartItems = request.json['cartItems']
+	return render_template('userSignUp.html')
 
-	newuser = User(name=name, email=email, cartItems=cartItems)
-	db.session.add(newuser)
-	db.session.commit()
-	return redirect(url_for('profile'))
 
-@app.route('/user_profile') 
-def showProfile():
-	return render_template('profile.html')
 
 @app.route('/create_producer',methods=['GET','POST'])
 def create_producer():
 	if request.method == "POST":
-		name = request.json['name']
-		email = request.json['email']
-		phone = request.json['telephone']
-		address = request.json['address']
-		category = request.json['category']
+		name = request.form['companyname']
+		email = request.form['email']
+		phone = request.form['phone']
+		address = request.form['address']
+		category = request.form['category']
 
-		newproducer = Producer(name=name, email=email, phone=phone, item=item, category_id=category_id)
+		newproducer = Producer(name=name, email=email, phone=phone, category=category)
 		db.session.add(newproducer)
 		db.session.commit()
-		return redirect(url_for('producer_profile'))
+
+		# create session
+		'''session['logged_in'] = True
+		session['name'] = name
+
+		flash(f'Welcome to your dashboard {session.name}','success')
+
+		return redirect(url_for('producer_profile'))'''
+	return render_template('ProducerSignup.html')
 
 @app.route('/user_login',methods=['GET','POST'])
 def user_login():
@@ -117,27 +114,20 @@ def user_login():
 
 		#compare passwords
 		if sha256_crypt.verify(user_password,password):
-			app.logger.info('Password Matched')
+
+			# create user session 
+			session['logged_in'] = True
+			session['name'] = result.name
+
+			flash('You are now logged in','success')
+			return redirect(url_for('dashboard'))
 		else:
-			app.logger.info('Password misMatched')
+			flash('wrong password','error')
+			return render_template('userSignUp.html')
+			#app.logger.info('Password misMatched')
 
 		
-	return render_template('index.html')
-
-@app.route('/user_profile')
-def showProfile():
-	return render_template('profile.html')
-
-@app.route('/add_producer')
-def add_producer():
-	name = request.json['name']
-	email = request.json['email']
-	phone = request.json['telephone']
-	address = request.json['address']
-	category = request.json['category']
-
-	return 'all good'
-
+	return render_template('userSignUp.html')
 #run statement
 if __name__ == '__main__':
 	#manager.run()
