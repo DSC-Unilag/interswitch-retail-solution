@@ -2,17 +2,20 @@
 import os
 
 #External Libraries
-from flask import Flask,request,url_for,render_template,session,logging,flash,redirect
+from flask import Flask,request,url_for,render_template,session,logging,flash,redirect,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_script import Manager
 from flask_migrate import Migrate,MigrateCommand
 from passlib.hash import sha256_crypt
+from functools import wraps
 # Local Modules
 from config import uri
 
 #Instantiate App
 app = Flask(__name__)
+
+app.secret_key = os.urandom(24)
 
 #db config
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
@@ -61,7 +64,64 @@ class Producer(db.Model):
 	item = db.relationship('Product',backref='manufacturer')
 	category_id = db.Column(db.Integer,db.ForeignKey('category.id'))
 
+
+# Json Schema
+class productSchema(ma.ModelSchema):
+	class Meta():
+		model = Product
+
+class categorySchema(ma.ModelSchema):
+	class Meta():
+		model = Category
+
+class userSchema(ma.ModelSchema):
+	class Meta():
+		model = User
+
+class producerSchema(ma.ModelSchema):
+	class Meta():
+		model = Producer
+
+# Init Schema Object
+product_schema = productSchema(strict=True)
+products_schema = productSchema(many=True,strict=True)
+
+category_schema = productSchema(strict=True)
+categories_schema = productSchema(many=True,strict=True)
+
+user_schema = productSchema(strict=True)
+users_schema = productSchema(many=True,strict=True)
+
+producer_schema = productSchema(strict=True)
+producers_schema = productSchema(many=True,strict=True)
+
+
+
 ## Endpoints #
+
+# Check if user_logged in
+def is_logged_in(f):
+	@wraps(f)
+	def wrap(*args,**kwargs):
+		if 'logged_in' in session:
+			return f(*args,**kwargs)
+		else:
+			flash('Unauthorized please login','danger')
+			return redirect(url_for('user_login'))
+
+	return wrap
+
+# Index
+@app.route('/')
+def index():
+	return render_template('index.html')
+
+@app.route('/profile')
+@is_logged_in
+def profile():
+	return render_template('profile.html')
+
+# Create New User
 @app.route('/create_user',methods=['GET','POST'])
 def create_user():
 	if request.method == 'POST':
@@ -79,8 +139,7 @@ def create_user():
 
 	return render_template('userSignUp.html')
 
-
-
+# Create Producer
 @app.route('/create_producer',methods=['GET','POST'])
 def create_producer():
 	if request.method == "POST":
@@ -106,6 +165,7 @@ def create_producer():
 		return redirect(url_for('producer_profile'))'''
 	return render_template('ProducerSignup.html')
 
+# User Login
 @app.route('/user_login',methods=['GET','POST'])
 def user_login():
 	if request.method == 'POST':
@@ -123,14 +183,31 @@ def user_login():
 			session['name'] = result.name
 
 			flash('You are now logged in','success')
-			return redirect(url_for('dashboard'))
+			return redirect(url_for('index'))
 		else:
 			flash('wrong password','error')
 			return render_template('userSignUp.html')
 			#app.logger.info('Password misMatched')
-
 		
 	return render_template('userSignUp.html')
+
+@app.route('/logout')
+def logout():
+	session.clear()
+	flash('You are now logged out','success')
+
+	return redirect(url_for('user_login'))
+
+# Display Products
+@app.route('/api/show_products',methods=['GET','POST'])
+def show_products():
+	products = Product.query.all()
+	product_class = Category.query.all()
+
+	presult = users_schema.dump(products)
+	cresult = categories_schema.dump(product_class)
+
+	return jsonify(presult.data)
 #run statement
 if __name__ == '__main__':
 	#manager.run()
