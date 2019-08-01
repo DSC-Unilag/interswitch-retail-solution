@@ -69,24 +69,29 @@ def create_user():
 	email = request.json['email']
 	cartItems = request.json['cartItems']
 
-	newuser = User(name=name,email=email,cartItems=cartItems)
+	newuser = User(name=name, email=email, cartItems=cartItems)
 	db.session.add(newuser)
 	db.session.commit()
 	return redirect(url_for('profile'))
 
-@app.route('/user_profile')
+@app.route('/user_profile') 
 def showProfile():
 	return render_template('profile.html')
 
-@app.route('/add_producer')
-def add_producer():
-	name = request.json['name']
-	email = request.json['email']
-	phone = request.json['telephone']
-	address = request.json['address']
-	category = request.json['category']
+@app.route('/create_producer',methods=['GET','POST'])
+def create_producer():
+	if request.method == "POST":
+		name = request.json['name']
+		email = request.json['email']
+		phone = request.json['telephone']
+		address = request.json['address']
+		category = request.json['category']
 
-	return 'all good'
+		newproducer = Producer(name=name, email=email, phone=phone, item=item, category_id=category_id)
+		db.session.add(newproducer)
+		db.session.commit()
+		return redirect(url_for('producer_profile'))
+
  
 @app.route('/user_login',methods=['GET','POST'])
 def user_login():
