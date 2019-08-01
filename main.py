@@ -2,12 +2,12 @@
 import os
 
 #External Libraries
-from flask import Flask,request,url_for,render_template
+from flask import Flask,request,url_for,render_template,session,logging,flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_script import Manager
 from flask_migrate import Migrate,MigrateCommand
-
+from passlib.hash import sha256_crypt
 # Local Modules
 from config import uri
 
@@ -21,6 +21,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #instantiate dbObject
 db = SQLAlchemy(app)
 
+#instantiate ma
+ma = Marshmallow(app)
+
 migrate = Migrate(app,db)
 manager = Manager(app)
 
@@ -33,7 +36,6 @@ class User(db.Model):
 	email = db.Column(db.String(100))
 	password = db.Column(db.String(100))
 	cartItems = db.Column(db.Integer)
-
 
 class Category(db.Model):
 	"""docstring for ClassName"""
@@ -85,8 +87,26 @@ def add_producer():
 	category = request.json['category']
 
 	return 'all good'
+ 
+@app.route('/user_login',methods=['GET','POST'])
+def user_login():
+	if request.method == 'POST':
+		email = request.form['email']
+		user_password = request.form['password']
+
+		result = User.query.filter_by(email=email).first()
+		password = result.password
+
+		#compare passwords
+		if sha256_crypt.verify(password,user_password):
+			app.logger.info('Password Matched')
+		else:
+			app.logger.info('Password misMatched')
+
+		
+	return render_template('index.html')
 
 #run statement
 if __name__ == '__main__':
-	manager.run()
-	#app.run(debug=True,port=5500)
+	#manager.run()
+	app.run(debug=True,port=5500)
