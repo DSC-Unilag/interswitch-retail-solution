@@ -63,16 +63,39 @@ class Producer(db.Model):
 
 ## Endpoints #
 
-@app.route('/create_user')
+@app.route('/create_user',methods=['GET','POST'])
 def create_user():
-	name = request.json['name']
-	email = request.json['email']
-	cartItems = request.json['cartItems']
+	if request.method == 'POST':
+		name = request.form['name']
+		email = request.form['email']
+		#cartItems = request.form['cartItems']
+		password = sha256_crypt.hash(str(request.form['password']))
 
-	newuser = User(name=name,email=email,cartItems=cartItems)
-	db.session.add(newuser)
-	db.session.commit()
-	return redirect(url_for('profile'))
+		newuser = User(name=name,email=email,password=password)
+		db.session.add(newuser)
+		db.session.commit()
+		app.logger.info('SUCCESSFUL')
+	else:
+		app.logger.info('PLs sign up')
+	return render_template('index.html')
+
+@app.route('/user_login',methods=['GET','POST'])
+def user_login():
+	if request.method == 'POST':
+		email = request.form['email']
+		user_password = str(request.form['password'])
+
+		result = User.query.filter_by(email=email).first()
+		password = result.password
+
+		#compare passwords
+		if sha256_crypt.verify(user_password,password):
+			app.logger.info('Password Matched')
+		else:
+			app.logger.info('Password misMatched')
+
+		
+	return render_template('index.html')
 
 @app.route('/user_profile')
 def showProfile():
@@ -87,24 +110,6 @@ def add_producer():
 	category = request.json['category']
 
 	return 'all good'
- 
-@app.route('/user_login',methods=['GET','POST'])
-def user_login():
-	if request.method == 'POST':
-		email = request.form['email']
-		user_password = request.form['password']
-
-		result = User.query.filter_by(email=email).first()
-		password = result.password
-
-		#compare passwords
-		if sha256_crypt.verify(password,user_password):
-			app.logger.info('Password Matched')
-		else:
-			app.logger.info('Password misMatched')
-
-		
-	return render_template('index.html')
 
 #run statement
 if __name__ == '__main__':
