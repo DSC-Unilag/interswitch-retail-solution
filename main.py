@@ -79,6 +79,33 @@ def create_user():
 		app.logger.info('PLs sign up')
 	return render_template('index.html')
 
+	name = request.json['name']
+	email = request.json['email']
+	cartItems = request.json['cartItems']
+
+	newuser = User(name=name, email=email, cartItems=cartItems)
+	db.session.add(newuser)
+	db.session.commit()
+	return redirect(url_for('profile'))
+
+@app.route('/user_profile') 
+def showProfile():
+	return render_template('profile.html')
+
+@app.route('/create_producer',methods=['GET','POST'])
+def create_producer():
+	if request.method == "POST":
+		name = request.json['name']
+		email = request.json['email']
+		phone = request.json['telephone']
+		address = request.json['address']
+		category = request.json['category']
+
+		newproducer = Producer(name=name, email=email, phone=phone, item=item, category_id=category_id)
+		db.session.add(newproducer)
+		db.session.commit()
+		return redirect(url_for('producer_profile'))
+
 @app.route('/user_login',methods=['GET','POST'])
 def user_login():
 	if request.method == 'POST':
