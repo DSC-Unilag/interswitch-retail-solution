@@ -20,6 +20,9 @@ app.secret_key = os.urandom(24)
 #db config
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = set(['jpeg', 'jpg', 'png', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #instantiate dbObject
 db = SQLAlchemy(app)
@@ -65,6 +68,11 @@ class Producer(db.Model):
 	address = db.Column(db.String(225),unique=True)
 	item = db.relationship('Product',backref='manufacturer')
 	category_id = db.Column(db.Integer,db.ForeignKey('category.id'))
+
+class Cart(db.Model):
+	id = db.Column(db.Integer,primary_key=True,nullable=False)
+	productID = db.Column(db.Integer,db.ForeignKey('product.id'))
+	userID = db.Column(db.Integer,db.ForeignKey('user.id'))
 
 
 # Json Schema
@@ -203,24 +211,39 @@ def logout():
 	return redirect(url_for('user_login'))
 
 # Display Products
-@app.route('/api/show_products',methods=['GET','POST'])
+@app.route('/show_products',methods=['GET','POST'])
 def show_products():
-	products = Product.query.all()
-	product_class = Category.query.all()
+	all_products = Product.query.all()
 
-	presult = users_schema.dump(products)
-	cresult = categories_schema.dump(product_class)
-
-	return jsonify(presult.data)
+	return render_template('showcase.html',all_products=all_products)
 
 # Add to cart
-@app.route('/add_item_to_cart')
+@app.route('/add_toCart')
 @is_logged_in
 def add_toCart():
-	curent_user = User.query.filter_by(email=session['email'])
-	email = curent_user.email
+	items = []
+	productId = int(request.args.get('productId'))
+	product = Product.query.filter_by(id = productId)
+	userID = User.query.filter_by(email=session['email'])
+
+	items.append(product)
+
+	session['items'] = items
+
+	total_price = 0
+	for product in items:
+		total_price += product.price
+
+	session['total_price'] = total_price
+
+	return redirect(url_for('Products'))
+
+@app.route('/cart')
+def cart():
+	items = session.get('items',none)
+	return render_template('cart_checkout.html',items=items,total_price=total_price)
 
 #run statement
 if __name__ == '__main__':
-	manager.run()
-	#app.run(debug=True,port=5500)
+	#manager.run()
+	app.run(debug=True,port=5500)
