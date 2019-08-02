@@ -248,15 +248,15 @@ def cart():
 	items = session.get('items',none)
 	return render_template('cart_checkout.html',items=items,total_price=total_price)
 =======
+
 # Checkout
-'''@app.route('/checkout', methods=['GET', 'POST'])
+@app.route('/checkout', methods=['GET', 'POST'])
 @is_logged_in
 def checkout():
 	curent_user = User.query.filter_by(email=session['email'])
 	email = current_user.email
 
-    return render_template('checkout.html', email=email, pub_key=pub_key)'''
->>>>>>> 4a78e7c4c492b100cb455df39531e9cdccce6928
+    return render_template('checkout.html', email=email, pub_key=pub_key)
 
 #run statement
 if __name__ == '__main__':
