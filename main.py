@@ -218,12 +218,13 @@ def show_products():
 	return jsonify(presult.data)
 
 # Checkout
-@app.route('/checkout')
+'''@app.route('/checkout', methods=['GET', 'POST'])
 @is_logged_in
 def checkout():
-	curent_user = 'emma'
-	email = 'emma@gmail.com'
-    return render_template('checkout.html', email=email, pub-key=)
+	curent_user = User.query.filter_by(email=session['email'])
+	email = current_user.email
+
+    return render_template('checkout.html', email=email, pub_key=pub_key)'''
 
 #run statement
 if __name__ == '__main__':
