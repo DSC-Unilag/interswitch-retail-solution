@@ -128,6 +128,11 @@ def user_login():
 
 		
 	return render_template('userSignUp.html')
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+	
+
 #run statement
 if __name__ == '__main__':
 	#manager.run()
