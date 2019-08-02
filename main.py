@@ -37,6 +37,7 @@ class User(db.Model):
 	id = db.Column(db.Integer,primary_key=True,nullable=False)
 	name = db.Column(db.String(100))
 	email = db.Column(db.String(100))
+	plan = db.Column(db.String(100))
 	password = db.Column(db.String(100))
 	cartItems = db.Column(db.Integer)
 
@@ -52,6 +53,7 @@ class Product(db.Model):
 	id = db.Column(db.Integer,primary_key=True,nullable=False)
 	name = db.Column(db.String(200))
 	description = db.Column(db.Text)
+	price = db.Column(db.Integer)
 	type_id = db.Column(db.Integer,db.ForeignKey('category.id'))
 	producer_id = db.Column(db.Integer,db.ForeignKey('producer.id'))
 
@@ -181,6 +183,7 @@ def user_login():
 			# create user session 
 			session['logged_in'] = True
 			session['name'] = result.name
+			session['email'] = result.email
 
 			flash('You are now logged in','success')
 			return redirect(url_for('index'))
@@ -191,6 +194,7 @@ def user_login():
 		
 	return render_template('userSignUp.html')
 
+# Logout
 @app.route('/logout')
 def logout():
 	session.clear()
@@ -208,7 +212,15 @@ def show_products():
 	cresult = categories_schema.dump(product_class)
 
 	return jsonify(presult.data)
+
+# Add to cart
+@app.route('/add_item_to_cart')
+@is_logged_in
+def add_toCart():
+	curent_user = User.query.filter_by(email=session['email'])
+	email = curent_user.email
+
 #run statement
 if __name__ == '__main__':
-	#manager.run()
-	app.run(debug=True,port=5500)
+	manager.run()
+	#app.run(debug=True,port=5500)
