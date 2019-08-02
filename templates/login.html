@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ShopWise</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/login.css')}}">
+</head>
+<body>
+    <header>
+        <div>
+            <img class="logoImage" src="{{url_for('static',filename='img/logo.png')}}" alt="Shopwise logo">
+            <div class="login-grid">
+                <div id="main-grid" class="grid-login">
+                    <div class="text-grid">
+                        <p id="consumer">Consumer</p>
+                        <p id="manufacturer">Manufacturer</p>
+                        
+                    </div>
+                    <p class="log">Log In</p>
+                    <div>
+
+                        <form action='user_login',method='POST'>
+                            <div class="container">
+                              <input type="email" placeholder="Email Address" name="email" required>
+                          
+                              <input type="password" placeholder="Password" name="psw" required>
+                                  
+                              <button type="submit">Log In</button>
+                            </div>
+                          </form>
+
+                    </div>
+                </div>
+                <div class="signup">
+                    <div class="grid-login">
+                        <p class="log">Create an account</p>
+                        <div>
+    
+                            <form action='create_user',method='POST'>
+                                <div class="container">
+                                  <input class="sign-bg" type="text" placeholder="First name" name="text" required>
+                                  <input class="sign-bg" type="text" placeholder="Last name" name="text" required>
+                                  <input class="sign-bg" type="email" placeholder="Email address" name="email" required>
+                              
+                                  <input class="sign-bg" type="password" placeholder="Password" name="psw" required>
+                                      
+                                  <button type="submit">Create Account</button>
+                                </div>
+                              </form>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+<script src="/static/scripts/login.js"></script>
+</html>

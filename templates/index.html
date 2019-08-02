@@ -1,69 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta charset="utf-8" />
+
+    <title>ShopWise</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static',filename='styles/index.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,300,400,500,600&display=swap" rel="stylesheet"> 
+ 
+    <script src="{{url_for('static',filename='scripts/main.js')}}"></script>
 </head>
 <body>
-	<!--{% if session.logged_in %}
-		<li><a href="#">About</a></li>
-		<li><a href="#">FAQs</a></li>
-		<li><a href="{{url_for('logout')}}">Logout</a></li>
-		<li><a href="#">Dashboard</a></li>
-	{% else %}
-		<li><a href="{{url_for('create_user')}}">Get Supplies</a></li>
-		<li><a href="{{url_for('create_producer')}}">Supply</a></li>
-	{% endif %} -->
+    <div class="container">
+        <header>
+            <div class="logoImage">
+                <a href="index.html"><img src="{{url_for('static',filename='img/logo.png')}}">
+                <h6>ShopWise</h6></a>
+            </div><div class="logoImage">
+                <img src="{{url_for('static',filename='img/logo.png')}}">
+                <h6>ShopWise</h6>
+            </div>
+            <div class="rightSideHeader">
+                <label for="toggle-1" class="toggle-menu">
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </label>
+                <input type="checkbox" id="toggle-1" />
+                <div class="searchBar">
+                    <form  action=" " method=" " >
+                        <input type="text" required> 
+                        <button>Search</button>
+                    </form>
+                </div>
+                <div class="loginIcon">
+                    <a href="login-customer.html"><i class="fa fa-user"></i><p>Login</p></a>
+                </div>
+            </div>
+        </header>
+        
+        <section class="part1">
+            <div class="leftPart1">
+                <div class="leftPart1Image">
+                    <img src="{{url_for('static',filename='img/logo.png')}}">
+                </div>
+                <div class="leftPart1Text">
+                    <h4><b>Bridging the gap Between <span id="consumers">Consumers</span> 
+                        and <span id="manufacturers">Manufacturer</span> </b></h4>
+                </div>
+                <div class="leftPart1Button">
+                    <a href="{{url_for('create_user')}}" id="get-supplies"><b>Get Supplies</b></a>
+                    <a href="{{url_for('create_producer')}}" id="supply"><b>Supply</b></a>   
+                </div>
+            </div>
+            <div class="rightPart1">
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="groceries.html">Provisions</a></li>
+                    <li><a href="groceries.html">Groceries</a></li>
+                    <li><a href="groceries.html">Provisions</a></li>
+                    <li><a href="groceries.html">Groceries</a></li>
+                    <li><a href="groceries.html">Provisions</a></li>
+                    <li><a href="groceries.html">Groceries</a></li>
+                    <li><a href="groceries.html">Provisions</a></li>
+                    <li><a href="groceries.html">Groceries</a></li>
+                </ul>
+            </div>
+        </section>
 
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <section class="part2">
+            <div class="part2Top">
+                <h5><b>How it Works</b></h5>
+                <span id="line"></span>
+            </div>
+            <div class="part2Bottom">
+                <div class="part2BottomLeft">
 
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+                </div>
+                <div class="part2BottomRight"> 
 
-  {% if session.logged_in %}
-	  <form class="form-inline my-2 my-lg-0">
-	      <!--<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-	      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>-->
-	      <li class="nav-item">
-	        <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="#">About</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
-	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="{{url_for('show_products')}}">Shop Now</a>
-	      </li>
-	    </form>
-	{% else %}
+                </div>
+            </div>
+        </section>
+        <section class="part3">
+            <div class="part3Links">
+                <h4>Want to Window Shop?</h4>
+                <a id="browse" href="#">Browse</a>
+            </div>
+        </section>
 
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="{{url_for('index')}}">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{url_for('create_user')}}">Get Supplies</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{url_for('create_producer')}}">Supply</a>
-      </li>
-      <!--<li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown01">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>-->
-    </ul>
-    {% endif %}
-  </div>
-</nav>
+        <footer>
+
+        </footer>
+    </div>
 </body>
 </html>

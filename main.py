@@ -151,7 +151,7 @@ def create_user():
 	else:
 		app.logger.info('PLs sign up')
 
-	return render_template('userSignUp.html')
+	return render_template('login.html')
 
 # Create Producer
 @app.route('/create_producer',methods=['GET','POST'])
@@ -177,7 +177,7 @@ def create_producer():
 		flash(f'Welcome to your dashboard {session.name}','success')
 
 		return redirect(url_for('producer_profile'))'''
-	return render_template('ProducerSignup.html')
+	return render_template('login.html')
 
 # User Login
 @app.route('/user_login',methods=['GET','POST'])
@@ -198,13 +198,17 @@ def user_login():
 			session['email'] = result.email
 
 			flash('You are now logged in','success')
-			return redirect(url_for('index'))
+			return redirect(url_for('show_products'))
 		else:
 			flash('wrong password','error')
-			return render_template('userSignUp.html')
+			return render_template('login.html')
 			#app.logger.info('Password misMatched')
 		
-	return render_template('userSignUp.html')
+	return render_template('login.html')
+
+@app.route('/product_info')
+def product_info():
+	return render_template('product_info.html')
 
 # Logout
 @app.route('/logout')
@@ -221,7 +225,6 @@ def show_products():
 
 	return render_template('showcase.html',all_products=all_products)
 
-<<<<<<< HEAD
 # Add to cart
 @app.route('/add_toCart')
 @is_logged_in
@@ -247,16 +250,15 @@ def add_toCart():
 def cart():
 	items = session.get('items',none)
 	return render_template('cart_checkout.html',items=items,total_price=total_price)
-=======
 
 # Checkout
-@app.route('/checkout', methods=['GET', 'POST'])
+
+'''@app.route('/checkout', methods=['GET', 'POST'])
 @is_logged_in
 def checkout():
 	curent_user = User.query.filter_by(email=session['email'])
 	email = current_user.email
-
-    return render_template('checkout.html', email=email, pub_key=pub_key)
+    return render_template('checkout.html', email=email, pub_key=pub_key)'''
 
 #run statement
 if __name__ == '__main__':
