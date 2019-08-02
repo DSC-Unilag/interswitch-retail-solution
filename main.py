@@ -17,6 +17,10 @@ app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
 
+#Paystack keys
+pub_key = "pk_test_82788a109685a5da5134bf4997f61ce4df7be4e6"
+secret_key = "sk_test_a04a9d39d4578cf392c9df3162d3108d6301bf22"
+
 #db config
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -217,6 +221,7 @@ def show_products():
 
 	return render_template('showcase.html',all_products=all_products)
 
+<<<<<<< HEAD
 # Add to cart
 @app.route('/add_toCart')
 @is_logged_in
@@ -242,6 +247,16 @@ def add_toCart():
 def cart():
 	items = session.get('items',none)
 	return render_template('cart_checkout.html',items=items,total_price=total_price)
+=======
+# Checkout
+'''@app.route('/checkout', methods=['GET', 'POST'])
+@is_logged_in
+def checkout():
+	curent_user = User.query.filter_by(email=session['email'])
+	email = current_user.email
+
+    return render_template('checkout.html', email=email, pub_key=pub_key)'''
+>>>>>>> 4a78e7c4c492b100cb455df39531e9cdccce6928
 
 #run statement
 if __name__ == '__main__':
