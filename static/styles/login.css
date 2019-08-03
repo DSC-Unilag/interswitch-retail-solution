@@ -1,0 +1,98 @@
+.login-grid{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10%;
+}
+.color-change{
+    color: #083A55;
+}
+.grid-login{
+    padding: 0% 10% 10% 10%;
+}
+.text-grid{
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+    font-family: Montserrat;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 29px;
+
+color: #169FE9;
+
+}
+#manufacturer{
+    font-weight: bold;
+    cursor: pointer;   
+}
+
+.logoImage>img{
+  position: absolute;
+    width: 43.29px !important;
+    height: 24px !important;
+    left: 31px;
+    top: 19px;
+}
+
+#consumer{
+    cursor: pointer;
+}
+.log{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+line-height: 29px;
+
+color: #169FE9;
+}
+input[type=email], input[type=password], input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 0px;
+    border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
+
+    font-family: Montserrat;
+font-style: normal;
+font-weight: light;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+
+color: #222;
+
+  }
+  .signup{
+    background: #F4F4F4;
+    margin-left: 12px;
+    padding: 0% 10% 10% 10%;
+  }
+  button{
+    width: 400px;
+    height: 48px;
+    
+    font-family: Montserrat;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 22px;
+color: #FFFFFF;
+    background: #169FE9;
+    border-radius: 8px;
+  }
+  .sign-bg{
+      background: #F4F4F4;
+  }
+  hr { 
+    display: inline;
+
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+  }

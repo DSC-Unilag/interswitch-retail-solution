@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="/static/styles/sw2.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400&display=swap" rel="stylesheet">
+<title>Shop Wise</title>
+</head>
+<body>
+
+<section id="checkout">
+<!---Cart-->
+<div class="checkout-header">
+<h4 class="cart">Cart</h4>
+</div>
+
+<div class="mini-nav">
+<ul>
+    <li class="first-head">Title</li>
+    <li class="second-head">Quantity</li>
+</ul>
+</div>
+
+<!---start grid-->
+<div id="content">
+
+	<!---colored box-->
+	<!---<div class="box"></div>-->
+
+	<!---text-->
+	{% for item in oncart %}
+		<div class="box"></div>
+		<div class="rectangle">
+		<p class="design-small">{{item.name}}</p>
+		<p class="text-design">{{item.description}}</p>
+		</div>
+
+		<!---product number--->
+		<div class="rectangle">
+		    <p class="count">3</p>
+		</div>
+
+		<!---last row-->
+		<div class="rectangle">
+		<p class="amount">N{{item.price}}</p>
+		<p class="duration">2 Months</p>
+		<p class="command">Remove</p>
+		</div>
+	{% endfor %}
+
+
+	<!----second row--->
+	<!---colored box-->
+	<!--<div class="box"></div>-->
+
+	<!----text--->
+	<!--<div class="rectangle">
+	<p class="design-small">Dangote</p>
+	<p class="text-design">Lorem ipsum dolor sit 
+	amet consectetur <br> adipisicing elit.</p>
+	</div>-->
+	   
+	<!----product number--->
+	<!---<div class="rectangle">
+	<p class="count">3</p>
+	</div>-->
+
+	<!---last row--->
+	<!--<div class="rectangle">
+	<p class="amount">N49 999</p>
+	<p class="duration">2 Months</p>
+	<p class="command">Remove</p>
+	</div>-->
+
+
+	<!---third row--->
+	<!----colored box--->
+	<!--<div class="box">
+	</div>-->
+
+	<!----text--->
+	<!---<div class="rectangle">
+	<p class="design-small">Dangote</p>
+	<p class="text-design">Lorem ipsum dolor sit 
+	amet consectetur <br> adipisicing elit.</p>
+	</div>-->
+
+	<!---product number--->
+	<!---<div class="rectangle">
+	<p class="count">3</p>
+	</div>-->
+	        
+	<!----last row--->
+	<!--<div class="rectangle">
+	<p class="amount">N49 999</p>
+	<p class="duration">2 Months</p>
+	<p class="command">Remove</p>
+	</div>-->
+
+	<div id="total">
+	    <p class="total">Total</p>
+	    <p class="total-amount">N{{total_price}}</p>
+	</div>
+</div>
+<div class="button">
+<a href="/show_products" class="btn btn-one">Continue Shopping</a>
+<a href= "/checkout" class="btn btn-two">Proceed to Checkout</a>
+</div>                 
+</section>
+</body>
+</html>
