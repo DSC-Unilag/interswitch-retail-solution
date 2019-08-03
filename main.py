@@ -278,13 +278,19 @@ def cart():
 
 	return render_template('sw2.html',oncart=oncart,total_price=total_price)
 
-@app.route('/checkout', methods=['GET', 'POST'])
 @is_logged_in
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-	curent_user = User.query.filter_by(email=session['email'])
+	email = session.get('email')
+	current_user = User.query.filter_by(email=email)
 	email = current_user.email
-	
-    return render_template('checkout.html', email=email, pub_key=pub_key)
+
+	return render_template('checkout.html', email=email, pub_key=pub_key)
+
+
+
+
+
 #run statement
 if __name__ == '__main__':
 	#manager.run()
