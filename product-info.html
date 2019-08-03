@@ -1,19 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ShopWise-Product information</title>
     <link rel="stylesheet" href="product-info.css">
+    <link rel="stylesheet" href="CSS/header.css">
 </head>
+
 <body>
     <header>
-        <div class="nav-bar">
+        <div class="logoImage">
+            <a href="index.html"><img src="images/logo.png">
+                <h6>ShopWise</h6>
+            </a>
+        </div>
+        <div class="logoImage">
+            <img src="images/logo.png">
+            <h6>ShopWise</h6>
+        </div>
+        <div class="rightSideHeader">
+            <label for="toggle-1" class="toggle-menu">
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </label>
+            <input type="checkbox" id="toggle-1" />
+            <div class="searchBar">
+                <form action=" " method=" ">
+                    <input type="text" required>
+                    <button>Search</button>
+                </form>
+            </div>
+            <div class="loginIcon">
+                <a href="login-customer.html"><i class="fa fa-user"></i>
+                    <p>Login</p>
+                </a>
+            </div>
+        </div>
+
+       
+    </header>
+    <div class="nav-bar">
             <p>Electronics > Lorem item</p>
             <button type="submit">Go to cart</button>
         </div>
-    </header>
     <div class="product-grid">
         <img src="" alt="Shoe">
         <div class="product-info">
@@ -21,55 +56,75 @@
             <p class="lorem">Lorem ipsum dolor sit</p>
             <p class="dang">N49,999</p>
             <div>
-                <p class="dang">Quantity</p>
-                <p class="dang">Plan duration</p>
+                <div>
+                    <p class="dang">Quantity</p>
+                    <p class="dang">Plan duration</p>
+                </div> <br>
+                <div>
+                    <input id="number-input" type="number" placeholder="0" name="number" required>
+                    <select>
+                        <option value="volvo">1 Month</option>
+                        <option value="volvo">2 Month</option>
+                        <option value="volvo">3 Month</option>
+                        <option value="volvo">4 Month</option>
+                        <option value="volvo">5 Month</option>
+                        <option value="volvo">6 Month</option>
+                        <option value="volvo">7 Month</option>
+                        <option value="volvo">8 Month</option>
+                        <option value="volvo">9 Month</option>
+                        <option value="volvo">10 Month</option>
+                        <option value="volvo">11 Month</option>
+                        <option value="volvo">12 Month</option>
+                    </select>
+
+                </div>
+
             </div>
-            <div>
-                stuff
-            </div>
-            <button type="submit">Add to cart</button>
         </div>
+        <button type="submit">Add to cart</button>
+    </div>
     </div>
     <p class="img-txt">Images</p>
     <div class="img-div">
-    <span class="sp"></span>
-    <div class="image-slide">
-            
+        <span class="sp"></span>
+        <div class="image-slide">
+
             <img src="" alt="" class="s-image">
             <img src="" alt="" class="s-image">
             <img src="" alt="" class="s-image">
-            
-    </div>
-    <span class="sp"></span>
+
+        </div>
+        <span class="sp"></span>
     </div>
     <div class="related">
         <p class="img-txt" id="rel">Related</p>
         <div class="related-grid">
             <div>
                 <img style="margin: 0%" src="images/Rectangle 3.7.png" alt="">
-                <!--<p class="dangote">Dangote</p>
+                <p class="dangote">Dangote</p>
                 <p class="rel-text">Lorem ipsum dolor sit amet</p>
-                <p class="dangote">N49,999</p>-->
+                <p class="dangote">N49,999</p>
             </div>
             <div>
-                    <img src="images/Rectangle 3.8.png" alt="">
-                    <p class="dangote">Dangote</p>
-                    <p class="rel-text">Lorem ipsum dolor sit amet</p>
-                    <p class="dangote">N49,999</p>
-                </div>
-                <div>
-                        <img src="images/Rectangle 3.9.png" alt="">
-                        <p class="dangote">Dangote</p>
-                        <p class="rel-text">Lorem ipsum dolor sit amet</p>
-                        <p class="dangote">N49,999</p>
-                    </div>
-                    <div>
-                            <img src="images/Rectangle 3.10.png" alt="">
-                            <p class="dangote">Dangote</p>
-                            <p class="rel-text">Lorem ipsum dolor sit amet</p>
-                            <p class="dangote">N49,999</p>
-                        </div>
+                <img src="images/Rectangle 3.8.png" alt="">
+                <p class="dangote">Dangote</p>
+                <p class="rel-text">Lorem ipsum dolor sit amet</p>
+                <p class="dangote">N49,999</p>
+            </div>
+            <div>
+                <img src="images/Rectangle 3.9.png" alt="">
+                <p class="dangote">Dangote</p>
+                <p class="rel-text">Lorem ipsum dolor sit amet</p>
+                <p class="dangote">N49,999</p>
+            </div>
+            <div>
+                <img src="images/Rectangle 3.10.png" alt="">
+                <p class="dangote">Dangote</p>
+                <p class="rel-text">Lorem ipsum dolor sit amet</p>
+                <p class="dangote">N49,999</p>
+            </div>
         </div>
     </div>
 </body>
+
 </html>

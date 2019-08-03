@@ -1,0 +1,142 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    width: 100%;
+    font-family: Montserrat;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: montserra;
+    font-weight: 500;
+}
+a{
+    text-decoration: none;
+}
+header{
+    padding: 19px;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-areas: "logoImage rightSideHeader";
+    }
+    .logoImage img{
+        position: absolute;
+        width: 43.29px;
+        height: 24px;
+        left: 31px;
+        top: 19px;
+
+    }
+    .logoImage h6 {
+        position: absolute;
+        width: 85px;
+        height: 17px;
+        left: 74px;
+        top: -19px;
+
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 20px;
+    
+        color: #8C8C8C;
+    }
+
+    /* righSideHeader*/
+
+    .rightSideHeader{
+        
+    }
+
+    .toggle-menu ul{display:table;}
+    .toggle-menu ul li{width:100%; height:3px; background-color:#01041a; margin-bottom:4px;}
+    .toggle-menu ul li:last-child{margin-bottom:0px;}
+
+    input[type=checkbox], label.toggle-menu{display:none;}
+
+    .searchBar{
+        position: absolute;
+        left: 490px;
+    }
+    .searchBar input{
+        position: absolute;
+        width: 250px;
+        height: 32px;
+        left: 66px;
+        border: none;
+        background: #FFFFFF;
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.25);
+        border-radius: 8px;
+    }
+    .searchBar button{
+        position: absolute;
+        width: 81px;
+        height: 32px;
+        left: 308px;
+
+        background: #083A55;
+        border-radius: 8px;
+        border: none;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 22px;
+        /* identical to box height */
+
+
+        color: #FFFFFF;
+
+    }
+    .searchBar button:hover{
+        cursor: pointer;
+    }
+
+    .loginIcon{
+        left: 1223px;
+        position: absolute;
+
+    }
+    .loginIcon a{
+        padding-left: 5px;
+        text-decoration: none;
+        top: 20px;
+    }
+    .loginIcon p:hover{
+        color: #169FE9;
+    }
+    .loginIcon .fa{
+        position: absolute;
+        width: 37.3px;
+        padding: 12px;
+        height: 38.2px;
+        /* padding-left: 11px; */
+        /* top: 23.7px; */
+        font-size: 20px;
+        border-radius: 50px;
+        color: #C4C4C4;
+        background-color: #c4c4c426;
+    }
+
+
+    .loginIcon  i.fa.fa-user {
+        left: 10px;
+    }
+    .loginIcon p{
+        position: absolute;
+        width: 52px;
+        height: 22px;
+        left: 55px;
+        top: -10px;
+
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 22px;
+        /* identical to box height */
+
+
+        color: #000000;
+
+    }
+/* end of header*/
