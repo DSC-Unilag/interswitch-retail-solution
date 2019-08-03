@@ -660,7 +660,7 @@ header{
 }
 .section-images{
     display: grid;
-    grid-gap: 40px;
+    grid-gap: 10%;
     top: 700px;
     position: absolute;
     grid-template-columns: 20% 20% 20% 20%;
@@ -715,7 +715,7 @@ header{
     height: 40px;
     left: 28px;
     top: 977px;
-
+    display: inline;
     font-family: Montserrat;
     font-style: normal;
     font-weight: bold;

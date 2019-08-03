@@ -114,7 +114,7 @@ producers_schema = productSchema(many=True,strict=True)
 ## Endpoints #
 
 # Check if user_logged in
-def is_logged_in(f):
+def is_logged_in(f):	
 	@wraps(f)
 	def wrap(*args,**kwargs):
 		if 'logged_in' in session:
@@ -130,54 +130,74 @@ def is_logged_in(f):
 def index():
 	return render_template('index.html')
 
+
 @app.route('/profile')
 @is_logged_in
 def profile():
 	return render_template('profile.html')
 
 # Create New User
+@app.route('/user_signup')
+def user_signup():
+	return render_template('login.html')
+
 @app.route('/create_user',methods=['GET','POST'])
 def create_user():
-	if request.method == 'POST':
-		name = request.form['name']
-		email = request.form['email']
-		password = sha256_crypt.hash(str(request.form['password']))
+	name = request.form['name']
+	email = request.form['email']
+	password = sha256_crypt.hash(str(request.form['password']))
 
-		newuser = User(name=name,email=email,password=password)
-		db.session.add(newuser)
-		db.session.commit()
-		flash('Welcome new user','success')
-		return redirect(url_for('user_profile'))
-	else:
-		app.logger.info('PLs sign up')
-
-	return render_template('login.html')
+	newuser = User(name=name,email=email,password=password)
+	db.session.add(newuser)
+	db.session.commit()
+	flash('Welcome new user','success')
+	return redirect(url_for('show_products'))
 
 # Create Producer
+@app.route('/producer_signup')
+def producer_signup():
+	return render_template('login.html')
+
 @app.route('/create_producer',methods=['GET','POST'])
 def create_producer():
-	if request.method == "POST":
-		companyname = request.form['companyname']
-		email = request.form['email']
-		phone = request.form['phone']
-		address = request.form['address']
+	companyname = request.form['companyname']
+	email = request.form['email']
+	phone = request.form['phone']
+	address = request.form['address']
+	category = request.form['category']
+
+	producer_class = Category.query.filter_by(categoryname=category).first()
+	#app.logger.info(producer_class.categoryname)
+
+	newproducer = Producer(companyname=companyname, email=email, phone=phone, address=address, produce_class=producer_class)
+	db.session.add(newproducer)
+	db.session.commit()
+
+	# create session
+	'''session['logged_in'] = True
+	session['name'] = name
+
+	flash(f'Welcome to your dashboard {session.name}','success')
+
+	return redirect(url_for('producer_profile'))'''
+	return redirect(url_for('show_products'))
+
+@app.route('/add_product',methods=['GET','POST'])
+def add_product():
+	if request.method == 'POST':
+		name = request.form['name']
+		description = request.form['description']
+		price = request.form['price']
 		category = request.form['category']
 
-		producer_class = Category.query.filter_by(categoryname=category).first()
-		#app.logger.info(producer_class.categoryname)
+		type_class = Category.query.filter_by(categoryname=category).first()
 
-		newproducer = Producer(companyname=companyname, email=email, phone=phone, address=address, produce_class=producer_class)
-		db.session.add(newproducer)
+		newproduct = Product(name=name,description=description,price=price,type=type_class)
+
+		db.session.add(newproduct)
 		db.session.commit()
 
-		# create session
-		'''session['logged_in'] = True
-		session['name'] = name
-
-		flash(f'Welcome to your dashboard {session.name}','success')
-
-		return redirect(url_for('producer_profile'))'''
-	return render_template('login.html')
+	return render_template('dummy_data.html')
 
 # User Login
 @app.route('/user_login',methods=['GET','POST'])
@@ -202,7 +222,7 @@ def user_login():
 		else:
 			flash('wrong password','error')
 			return render_template('login.html')
-			#app.logger.info('Password misMatched')
+			app.logger.info('Password misMatched')
 		
 	return render_template('login.html')
 
@@ -227,39 +247,44 @@ def show_products():
 
 # Add to cart
 @app.route('/add_toCart')
-@is_logged_in
+#@is_logged_in
 def add_toCart():
-	items = []
-	productId = int(request.args.get('productId'))
-	product = Product.query.filter_by(id = productId)
+	#productId = int(request.args.get('productId'))
+	productsoncart = Product.query.all()
+	'''print(productsoncart)
+	#product = Product.query.filter_by(id = productId)
 	userID = User.query.filter_by(email=session['email'])
 
-	items.append(product)
-
-	session['items'] = items
+	session['productsoncart'] = productsoncart
 
 	total_price = 0
-	for product in items:
+	for product in productsoncart:
 		total_price += product.price
 
-	session['total_price'] = total_price
+	session['total_price'] = total_price'''
 
-	return redirect(url_for('Products'))
+	return productsoncart #redirect(url_for('Products'))
+
+@app.route('/producer_dash')
+def producer_dash():
+	return render_template('sw.html')
 
 @app.route('/cart')
 def cart():
-	items = session.get('items',none)
-	return render_template('cart_checkout.html',items=items,total_price=total_price)
+	oncart = Product.query.all()
+	total_price = 0
+	for product in oncart:
+		total_price += product.price
 
-# Checkout
+	return render_template('sw2.html',oncart=oncart,total_price=total_price)
 
-'''@app.route('/checkout', methods=['GET', 'POST'])
+@app.route('/checkout', methods=['GET', 'POST'])
 @is_logged_in
 def checkout():
 	curent_user = User.query.filter_by(email=session['email'])
 	email = current_user.email
-    return render_template('checkout.html', email=email, pub_key=pub_key)'''
-
+	
+    return render_template('checkout.html', email=email, pub_key=pub_key)
 #run statement
 if __name__ == '__main__':
 	#manager.run()

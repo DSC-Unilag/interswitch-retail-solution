@@ -21,11 +21,11 @@
                     <p class="log">Log In</p>
                     <div>
 
-                        <form action='user_login',method='POST'>
+                        <form action="/user_login" method="POST">
                             <div class="container">
                               <input type="email" placeholder="Email Address" name="email" required>
                           
-                              <input type="password" placeholder="Password" name="psw" required>
+                              <input type="password" placeholder="Password" name="password" required>
                                   
                               <button type="submit">Log In</button>
                             </div>
@@ -38,13 +38,12 @@
                         <p class="log">Create an account</p>
                         <div>
     
-                            <form action='create_user',method='POST'>
+                            <form action="/create_user" method="POST">
                                 <div class="container">
-                                  <input class="sign-bg" type="text" placeholder="First name" name="text" required>
-                                  <input class="sign-bg" type="text" placeholder="Last name" name="text" required>
+                                  <input class="sign-bg" type="text" placeholder="Full Name" name="name" required>
                                   <input class="sign-bg" type="email" placeholder="Email address" name="email" required>
                               
-                                  <input class="sign-bg" type="password" placeholder="Password" name="psw" required>
+                                  <input class="sign-bg" type="password" placeholder="Password" name="password" required>
                                       
                                   <button type="submit">Create Account</button>
                                 </div>
@@ -59,3 +58,15 @@
 </body>
 <script src="/static/scripts/login.js"></script>
 </html>
+
+
+<!--<form action="/create_user" method="POST">
+  <div class="container">
+    <input class="sign-bg" type="text" placeholder="Full Name" name="name" required>
+    <input class="sign-bg" type="email" placeholder="Email address" name="email" required>
+
+    <input class="sign-bg" type="password" placeholder="Password" name="password" required>
+        
+    <button type="submit">Create Account</button>
+  </div>
+</form>-->

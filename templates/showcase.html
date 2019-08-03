@@ -18,7 +18,7 @@
     <div class="container">
         <header>
             <div class="logoImage">
-                <a href="index.html"><img src="images/logo.png">
+                <a href="index.html"><img src="/static/img/logo.png">
                 <h6>ShopWise</h6></a>
             </div>
             <div class="rightSideHeader">
@@ -49,11 +49,6 @@
                     <li><a href="groceries.html">Provisions</a></li>
                     <li><a href="groceries.html">Groceries</a></li>
                     <li><a href="groceries.html">Provisions</a></li>
-                    <li><a href="groceries.html">Groceries</a></li>
-                    <li><a href="groceries.html">Provisions</a></li>
-                    <li><a href="groceries.html">Groceries</a></li>
-                    <li><a href="groceries.html">Provisions</a></li>
-                    <li><a href="groceries.html">Groceries</a></li>
                 </ul>
             </div>
             <div class="groceries-rightpart1">
@@ -64,45 +59,27 @@
             
         </section>
 
-        <section class="groceries-part2">
+        <section class="groceries-part2" class="container">
             <div class="section-heading">
                 <h4>Groceries</h4>
                 <a href="#">View more</a>
             </div>
-            <div class="section-images">
-              <div class="section-images1">
-                <img>
-                <p>Dangote
-                    <a href="#">Sugar</a>
-                    N99.00
-                </p>
-              </div>
-              <div class="section-images2">
-                <img>
-                <p>Dangote
-                    <a href="#">Sugar</a>
-                    N99.00
-                </p>
-              </div>
-              <div class="section-images3">
-                <img>
-                <p>Dangote
-                    <a href="#">Sugar</a>
-                    N99.00
-                </p>
-              </div>
-              <div class="section-images4">
-                <img>
-                <p>Dangote
-                <a href="#">Sugar</a>
-                    N99.00
-                </p>
-              </div>  
+            
+	            <div class="section-images">
+	            {% for product in all_products %}
+	              <div class="section-images1">
+	                <img>
+	                <p>{{product.manufacturer}}
+	                    <a href="#">{{product.name}}</a>
+	                    {{product.price}}
+	                </p>
+	              </div>
+	         	{% endfor %}
             </div>
         </section>
 
 
-        <section class="groceries-part3">
+        <!--<section class="groceries-part3">
             <div class="section-heading">
                 <h4>Groceries</h4>
                 <a href="#">View more</a>
@@ -179,7 +156,9 @@
         
         <footer>
 
-        </footer>
+        </footer>-->
+
+        
     </div>
 </body>
 </html>

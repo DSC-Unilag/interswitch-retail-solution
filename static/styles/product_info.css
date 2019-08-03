@@ -1,7 +1,8 @@
 
 body{
     margin: 0%;
-}.nav-bar{
+}
+.nav-bar{
     background: #083A55;
     overflow: hidden;
 }
@@ -36,10 +37,10 @@ line-height: 20px;
 color: #083A55;
   }
   .product-grid{
+    width:60%;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: auto auto;
-    margin-left: 25%;
-    margin-right: 25%;
   }
   .product-grid img{
     height: 250px;

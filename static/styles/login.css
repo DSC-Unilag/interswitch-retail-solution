@@ -58,13 +58,13 @@ input[type=email], input[type=password], input[type=text] {
 
     font-family: Montserrat;
 font-style: normal;
-font-weight: normal;
+font-weight: light;
 font-size: 18px;
 line-height: 22px;
 /* identical to box height */
 
 
-color: #C4C4C4;
+color: #222;
 
   }
   .signup{
