@@ -1,4 +1,5 @@
 # Inbuilt libs
+'''
 import os
 
 #External Libraries
@@ -13,17 +14,25 @@ from functools import wraps
 from config import uri
 
 #Instantiate App
-app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
-
+'''
+from flask import Flask,request,url_for,render_template, redirect
 #Paystack keys
+app = Flask(__name__)
+
 pub_key = "pk_test_82788a109685a5da5134bf4997f61ce4df7be4e6"
+
+'''
 secret_key = "sk_test_a04a9d39d4578cf392c9df3162d3108d6301bf22"
+
 
 #db config
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = set(['jpeg', 'jpg', 'png', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #instantiate dbObject
 db = SQLAlchemy(app)
@@ -70,6 +79,11 @@ class Producer(db.Model):
 	item = db.relationship('Product',backref='manufacturer')
 	category_id = db.Column(db.Integer,db.ForeignKey('category.id'))
 
+class Cart(db.Model):
+	id = db.Column(db.Integer,primary_key=True,nullable=False)
+	productID = db.Column(db.Integer,db.ForeignKey('product.id'))
+	userID = db.Column(db.Integer,db.ForeignKey('user.id'))
+
 
 # Json Schema
 class productSchema(ma.ModelSchema):
@@ -106,7 +120,7 @@ producers_schema = productSchema(many=True,strict=True)
 ## Endpoints #
 
 # Check if user_logged in
-def is_logged_in(f):
+def is_logged_in(f):	
 	@wraps(f)
 	def wrap(*args,**kwargs):
 		if 'logged_in' in session:
@@ -122,54 +136,74 @@ def is_logged_in(f):
 def index():
 	return render_template('index.html')
 
+
 @app.route('/profile')
 @is_logged_in
 def profile():
 	return render_template('profile.html')
 
 # Create New User
+@app.route('/user_signup')
+def user_signup():
+	return render_template('login.html')
+
 @app.route('/create_user',methods=['GET','POST'])
 def create_user():
-	if request.method == 'POST':
-		name = request.form['name']
-		email = request.form['email']
-		password = sha256_crypt.hash(str(request.form['password']))
+	name = request.form['name']
+	email = request.form['email']
+	password = sha256_crypt.hash(str(request.form['password']))
 
-		newuser = User(name=name,email=email,password=password)
-		db.session.add(newuser)
-		db.session.commit()
-		flash('Welcome new user','success')
-		return redirect(url_for('user_profile'))
-	else:
-		app.logger.info('PLs sign up')
-
-	return render_template('userSignUp.html')
+	newuser = User(name=name,email=email,password=password)
+	db.session.add(newuser)
+	db.session.commit()
+	flash('Welcome new user','success')
+	return redirect(url_for('show_products'))
 
 # Create Producer
+@app.route('/producer_signup')
+def producer_signup():
+	return render_template('login.html')
+
 @app.route('/create_producer',methods=['GET','POST'])
 def create_producer():
-	if request.method == "POST":
-		companyname = request.form['companyname']
-		email = request.form['email']
-		phone = request.form['phone']
-		address = request.form['address']
+	companyname = request.form['companyname']
+	email = request.form['email']
+	phone = request.form['phone']
+	address = request.form['address']
+	category = request.form['category']
+
+	producer_class = Category.query.filter_by(categoryname=category).first()
+	#app.logger.info(producer_class.categoryname)
+
+	newproducer = Producer(companyname=companyname, email=email, phone=phone, address=address, produce_class=producer_class)
+	db.session.add(newproducer)
+	db.session.commit()
+
+	# create session
+	session['logged_in'] = True
+	session['name'] = name
+
+	flash(f'Welcome to your dashboard {session.name}','success')
+
+	return redirect(url_for('producer_profile'))
+	return redirect(url_for('show_products'))
+
+@app.route('/add_product',methods=['GET','POST'])
+def add_product():
+	if request.method == 'POST':
+		name = request.form['name']
+		description = request.form['description']
+		price = request.form['price']
 		category = request.form['category']
 
-		producer_class = Category.query.filter_by(categoryname=category).first()
-		#app.logger.info(producer_class.categoryname)
+		type_class = Category.query.filter_by(categoryname=category).first()
 
-		newproducer = Producer(companyname=companyname, email=email, phone=phone, address=address, produce_class=producer_class)
-		db.session.add(newproducer)
+		newproduct = Product(name=name,description=description,price=price,type=type_class)
+
+		db.session.add(newproduct)
 		db.session.commit()
 
-		# create session
-		'''session['logged_in'] = True
-		session['name'] = name
-
-		flash(f'Welcome to your dashboard {session.name}','success')
-
-		return redirect(url_for('producer_profile'))'''
-	return render_template('ProducerSignup.html')
+	return render_template('dummy_data.html')
 
 # User Login
 @app.route('/user_login',methods=['GET','POST'])
@@ -190,13 +224,17 @@ def user_login():
 			session['email'] = result.email
 
 			flash('You are now logged in','success')
-			return redirect(url_for('index'))
+			return redirect(url_for('show_products'))
 		else:
 			flash('wrong password','error')
-			return render_template('userSignUp.html')
-			#app.logger.info('Password misMatched')
+			return render_template('login.html')
+			app.logger.info('Password misMatched')
 		
-	return render_template('userSignUp.html')
+	return render_template('login.html')
+
+@app.route('/product_info')
+def product_info():
+	return render_template('product_info.html')
 
 # Logout
 @app.route('/logout')
@@ -207,26 +245,64 @@ def logout():
 	return redirect(url_for('user_login'))
 
 # Display Products
-@app.route('/api/show_products',methods=['GET','POST'])
+@app.route('/show_products',methods=['GET','POST'])
 def show_products():
-	products = Product.query.all()
-	product_class = Category.query.all()
+	all_products = Product.query.all()
 
-	presult = users_schema.dump(products)
-	cresult = categories_schema.dump(product_class)
+	return render_template('showcase.html',all_products=all_products)
 
-	return jsonify(presult.data)
+# Add to cart
+@app.route('/add_toCart')
+#@is_logged_in
+def add_toCart():
+	#productId = int(request.args.get('productId'))
+	productsoncart = Product.query.all()
+	print(productsoncart)
+	#product = Product.query.filter_by(id = productId)
+	userID = User.query.filter_by(email=session['email'])
 
-# Checkout
-'''@app.route('/checkout', methods=['GET', 'POST'])
+	session['productsoncart'] = productsoncart
+
+	total_price = 0
+	for product in productsoncart:
+		total_price += product.price
+
+	session['total_price'] = total_price
+
+	return productsoncart #redirect(url_for('Products'))
+
+@app.route('/producer_dash')
+def producer_dash():
+	return render_template('sw.html')
+
+@app.route('/cart')
+def cart():
+	oncart = Product.query.all()
+	total_price = 0
+	for product in oncart:
+		total_price += product.price
+
+	return render_template('sw2.html',oncart=oncart,total_price=total_price)
+
 @is_logged_in
-def checkout():
-	curent_user = User.query.filter_by(email=session['email'])
-	email = current_user.email
+'''
+'''
+@app.route('/')
+def index():
+    return 'Hello World'
+'''
+@app.route('/')
+def index():
+	return redirect(url_for('checkout'))
 
-    return render_template('checkout.html', email=email, pub_key=pub_key)'''
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+	email = 'bashorun@gmail.com'
+
+	return render_template('checkout.html', email=email, pub_key=pub_key)
+
 
 #run statement
 if __name__ == '__main__':
-	manager.run()
-	#app.run(debug=True,port=5500)
+	#manager.run()
+	app.run(debug=True,port=5500)
